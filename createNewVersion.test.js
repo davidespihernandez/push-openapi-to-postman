@@ -14,9 +14,10 @@ const axiosPut = axios.put;
 describe('test updateSchemaFile', () => {
     test('calls the Postman API with the proper payload', async () => {
         axiosPut.mockResolvedValue({status: 200, data: {id: "CREATED_ID"}});
-        const versionCreated = await createNewVersion('API_ID', 'SCHEMA_ID', '1.0.0', 'First release');
+        const versionCreated = await createNewVersion('API_KEY', 'API_ID', 'SCHEMA_ID', '1.0.0', 'First release');
         expect(axiosPut).toHaveBeenCalledTimes(1);
         expect(getAxiosConfig).toHaveBeenCalledTimes(1);
+        expect(getAxiosConfig).toHaveBeenCalledWith('API_KEY');
         expect(axiosPut).toHaveBeenCalledWith(
             `${POSTMAN_API_BASE_URL}/apis/API_ID/versions`,
             {

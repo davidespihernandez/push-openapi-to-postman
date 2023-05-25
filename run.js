@@ -6,6 +6,7 @@ const createNewVersion = require('./createNewVersion');
 
 async function run() {
   try {
+    const postmanApiKey = core.getInput('postman-api-key');
     const path = core.getInput('path-to-definition');
     const apiId = core.getInput('api-id');
     const schemaId = core.getInput('schema-id');
@@ -17,10 +18,10 @@ async function run() {
     const openAPIFileContents = await readFile(path);
 
     core.info(`Updating schema file ...`);
-    await updateSchemaFile(apiId, schemaId, openAPIFileContents, fileName);
+    await updateSchemaFile(postmanApiKey, apiId, schemaId, openAPIFileContents, fileName);
 
     core.info(`Creating new version ...`);
-    const createdVersionId = await createNewVersion(apiId, schemaId, versionName, releaseNotes);
+    const createdVersionId = await createNewVersion(postmanApiKey, apiId, schemaId, versionName, releaseNotes);
 
     core.setOutput('createdVersionId', createdVersionId);
   } catch (error) {
