@@ -4,71 +4,53 @@ Pushes an OpenAPI definition in your repository to Postman, creating a new versi
 
 
 ## Usage
+Example of manual trigger, asking for the required inputs.
 
 ```yaml
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v3
-  - name: Read package.json
-    id: package
-    uses: juliangruber/read-file-action@v1
-    with:
-      path: ./package.json
-  - name: Echo package.json
-    run: echo "${{ steps.package.outputs.content }}"
+name: Manual Trigger Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      pathToDefinition:
+        description: 'Path to the OpenAPI definition file in the repository'
+        required: true
+        default: './openAPI.json'
+      apiId:
+        description: 'Postman API ID'
+        required: true
+        default: 'String'
+      schemaId:
+        description: 'Postman schema id on the previous API'
+        required: true
+        default: 'String'
+      versionName:
+        description: 'The new version name'
+        required: true
+        default: '1.0.0'
+      releaseNotes:
+        description: 'The new version release notes'
+        required: false
+        default: ''
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Push OpenAPI to Postman
+        id: pushApi
+        uses: davidespihernandez/push-openapi-to-postman@v1
+        with:
+          path-to-definition: ./openApi.json
+          postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
+          api-id: ${{ github.event.inputs.apiId }}
+          schema-id: ${{ github.event.inputs.schemaId }}
+          api-path-to-file-name: index.json
+          version-name: ${{ github.event.inputs.versionName }}
+          release-notes: ${{ github.event.inputs.releaseNotes }}
 ```
 
 ## License
 
 MIT
 
-## Package for distribution
-
-GitHub Actions will run the entry point from the action.yml. Packaging assembles the code into one file that can be checked in to Git, enabling fast and reliable execution and preventing the need to check in node_modules.
-
-Actions are run from GitHub repos.  Packaging the action will create a packaged action in the dist folder.
-
-Run prepare
-
-```bash
-npm run prepare
-```
-
-Since the packaged index.js is run from the dist folder.
-
-```bash
-git add dist
-```
-
-## Create a release branch
-
-Users shouldn't consume the action from master since that would be latest code and actions can break compatibility between major versions.
-
-Checkin to the v1 release branch
-
-```bash
-git checkout -b v1
-git commit -a -m "v1 release"
-```
-
-```bash
-git push origin v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket:
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Usage
-
-You can now consume the action by referencing the v1 branch
-
-```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
