@@ -13,6 +13,7 @@ jest.mock('@actions/core');
 
 const CREATED_ID = 'CREATED_ID';
 const INPUT_VARIABLES = {
+  'postman-api-key': 'API_KEY',
   'path-to-definition': './openAPI.json',
   'api-id': 'API_ID',
   'schema-id': 'SCHEMA_ID',
@@ -40,8 +41,8 @@ describe('test run', () => {
     await run();
 
     expect(readFile).toHaveBeenCalledWith('./openAPI.json');
-    expect(updateSchemaFile).toHaveBeenCalledWith('API_ID', 'SCHEMA_ID', 'text', 'index.json');
-    expect(createNewVersion).toHaveBeenCalledWith('API_ID', 'SCHEMA_ID', '1.0.0', 'First release');
+    expect(updateSchemaFile).toHaveBeenCalledWith('API_KEY', 'API_ID', 'SCHEMA_ID', 'text', 'index.json');
+    expect(createNewVersion).toHaveBeenCalledWith('API_KEY', 'API_ID', 'SCHEMA_ID', '1.0.0', 'First release');
     expect(core.setOutput).toHaveBeenCalledWith('createdVersionId', CREATED_ID);
   });
 
@@ -72,7 +73,7 @@ describe('test run', () => {
     await run();
 
     expect(readFile).toHaveBeenCalledWith('./openAPI.json');
-    expect(updateSchemaFile).toHaveBeenCalledWith('API_ID', 'SCHEMA_ID', 'text', 'index.json');
+    expect(updateSchemaFile).toHaveBeenCalledWith('API_KEY', 'API_ID', 'SCHEMA_ID', 'text', 'index.json');
     expect(createNewVersion).not.toHaveBeenCalled();
     expect(core.setFailed).toHaveBeenCalledWith('Error updating schema. Error code: 400. Error body: "Error"');
   });
@@ -91,8 +92,8 @@ describe('test run', () => {
     await run();
 
     expect(readFile).toHaveBeenCalledWith('./openAPI.json');
-    expect(updateSchemaFile).toHaveBeenCalledWith('API_ID', 'SCHEMA_ID', 'text', 'index.json');
-    expect(createNewVersion).toHaveBeenCalledWith('API_ID', 'SCHEMA_ID', '1.0.0', 'First release');
+    expect(updateSchemaFile).toHaveBeenCalledWith('API_KEY', 'API_ID', 'SCHEMA_ID', 'text', 'index.json');
+    expect(createNewVersion).toHaveBeenCalledWith('API_KEY', 'API_ID', 'SCHEMA_ID', '1.0.0', 'First release');
     expect(core.setFailed).toHaveBeenCalledWith('Error creating new version. Error code: 400. Error body: "Error"');
   });
 
