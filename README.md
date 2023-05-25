@@ -7,7 +7,7 @@ Pushes an OpenAPI definition in your repository to Postman, creating a new versi
 Example of manual trigger, asking for the required inputs.
 
 ```yaml
-name: Manual Trigger Workflow
+name: Sync OpenAPI with Postman
 on:
   workflow_dispatch:
     inputs:
