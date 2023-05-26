@@ -39,7 +39,7 @@ const {POSTMAN_API_BASE_URL} = __nccwpck_require__(1629);
 
 const createNewVersion = async (postmanApiKey, apiId, schemaId, versionName, releaseNotes) => {
     core.info(`Creating new version on Postman ...`);
-    const response = await axios.put(
+    const response = await axios.post(
         `${POSTMAN_API_BASE_URL}/apis/${apiId}/versions`,
         {
             'name': versionName,

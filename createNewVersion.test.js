@@ -9,16 +9,16 @@ jest.mock('./axiosUtils', () => {
         getAxiosConfig: jest.fn().mockReturnValue({}),
     };
 });
-const axiosPut = axios.put;
+const axiosPost = axios.post;
 
 describe('test updateSchemaFile', () => {
     test('calls the Postman API with the proper payload', async () => {
-        axiosPut.mockResolvedValue({status: 200, data: {id: "CREATED_ID"}});
+        axiosPost.mockResolvedValue({status: 200, data: {id: "CREATED_ID"}});
         const versionCreated = await createNewVersion('API_KEY', 'API_ID', 'SCHEMA_ID', '1.0.0', 'First release');
-        expect(axiosPut).toHaveBeenCalledTimes(1);
+        expect(axiosPost).toHaveBeenCalledTimes(1);
         expect(getAxiosConfig).toHaveBeenCalledTimes(1);
         expect(getAxiosConfig).toHaveBeenCalledWith('API_KEY');
-        expect(axiosPut).toHaveBeenCalledWith(
+        expect(axiosPost).toHaveBeenCalledWith(
             `${POSTMAN_API_BASE_URL}/apis/API_ID/versions`,
             {
                 'name': '1.0.0',
