@@ -1,4 +1,4 @@
-# publish-openapi-to-postman
+# push-openapi-to-postman
 
 Pushes an OpenAPI definition in your repository to Postman, creating a new version on an existing API.
 
@@ -11,18 +11,6 @@ name: Sync OpenAPI with Postman
 on:
   workflow_dispatch:
     inputs:
-      pathToDefinition:
-        description: 'Path to the OpenAPI definition file in the repository'
-        required: true
-        default: './openAPI.json'
-      apiId:
-        description: 'Postman API ID'
-        required: true
-        default: 'String'
-      schemaId:
-        description: 'Postman schema id on the previous API'
-        required: true
-        default: 'String'
       versionName:
         description: 'The new version name'
         required: true
@@ -36,19 +24,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Push OpenAPI to Postman
         id: pushApi
         uses: davidespihernandez/push-openapi-to-postman@v1
         with:
-          path-to-definition: ./openApi.json
+          path-to-definition: ./api_definition.json
           postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
-          api-id: ${{ github.event.inputs.apiId }}
-          schema-id: ${{ github.event.inputs.schemaId }}
+          api-id: ${{ env.API_ID }}
+          schema-id: ${{ env.SCHEMA_ID }}
           api-path-to-file-name: index.json
           version-name: ${{ github.event.inputs.versionName }}
           release-notes: ${{ github.event.inputs.releaseNotes }}
 ```
+
+For the previous example to work you need to define:
+- An environment variable `API_ID` containing the API id that is going to be updated
+- An environment variable `SCHEMA_ID` containing the schema (definition) id that is going to be updated
+- A secret called `POSTMAN_API_KEY` containing the Postman API key with admin permission on the API that is going to be modified.
+
+Other things to take into account:
+
+* Make sure the `path-to-definition` points to the file in your repo that contains your OpenAPI definition. 
+* The OpenAPI definition must be in JSON format.
+* Make sure the file name to update in your API schema matches the value on the `api-path-to-file-name` input.  
+
 
 ## License
 
