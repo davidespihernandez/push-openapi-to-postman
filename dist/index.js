@@ -63,6 +63,27 @@ module.exports = createNewVersion;
 
 /***/ }),
 
+/***/ 5195:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const core = __nccwpck_require__(2186);
+const axios = __nccwpck_require__(8757);
+const {getAxiosConfig} = __nccwpck_require__(770);
+const {POSTMAN_API_BASE_URL} = __nccwpck_require__(1629);
+
+const getSchemaId = async (postmanApiKey, apiId) => {
+    const url = `${POSTMAN_API_BASE_URL}/apis/${apiId}?include=schemas`;
+    core.info(`Getting the schema id for ${apiId}: ${url} ...`);
+    const response = await axios.get(url, getAxiosConfig(postmanApiKey));
+    core.debug(`Postman API GET response code: ${response.status}`);
+    return response.data.schemas[0].id;
+}
+
+module.exports = getSchemaId;
+
+
+/***/ }),
+
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -6224,6 +6245,7 @@ const core = __nccwpck_require__(2186);
 const readFile = __nccwpck_require__(1589);
 const updateSchemaFile = __nccwpck_require__(3194);
 const createNewVersion = __nccwpck_require__(700);
+const getSchemaId = __nccwpck_require__(5195);
 
 
 async function run() {
@@ -6231,7 +6253,6 @@ async function run() {
     const postmanApiKey = core.getInput('postman-api-key');
     const path = core.getInput('path-to-definition');
     const apiId = core.getInput('api-id');
-    const schemaId = core.getInput('schema-id');
     const fileName = core.getInput('api-path-to-file-name');
     const versionName = core.getInput('version-name');
     const releaseNotes = core.getInput('release-notes');
@@ -6239,10 +6260,12 @@ async function run() {
     core.info(`Inputs:`);
     core.info(`  path-to-definition: ${path}`);
     core.info(`  api-id: ${apiId}`);
-    core.info(`  schema-id: ${schemaId}`);
     core.info(`  api-path-to-file-name: ${fileName}`);
     core.info(`  version-name: ${versionName}`);
     core.info(`  release-notes: ${releaseNotes}`);
+
+    core.info(`Retrieving the Schema id from the API ...`);
+    const schemaId = getSchemaId(postmanApiKey, apiId);
 
     core.info(`Reading OpenAPI definition file ...`);
     const openAPIFileContents = await readFile(path);
