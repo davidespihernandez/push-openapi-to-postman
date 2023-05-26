@@ -20,7 +20,7 @@ on:
         required: false
         default: ''
 jobs:
-  build:
+  sync-with-postman-api:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
