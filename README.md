@@ -31,8 +31,7 @@ jobs:
         with:
           path-to-definition: ./api_definition.json
           postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
-          api-id: ${{ env.API_ID }}
-          schema-id: ${{ env.SCHEMA_ID }}
+          api-id: ${{ vars.API_ID }}
           api-path-to-file-name: index.json
           version-name: ${{ github.event.inputs.versionName }}
           release-notes: ${{ github.event.inputs.releaseNotes }}
@@ -40,7 +39,6 @@ jobs:
 
 For the previous example to work you need to define:
 - An environment variable `API_ID` containing the API id that is going to be updated
-- An environment variable `SCHEMA_ID` containing the schema (definition) id that is going to be updated
 - A secret called `POSTMAN_API_KEY` containing the Postman API key with admin permission on the API that is going to be modified.
 
 Other things to take into account:
