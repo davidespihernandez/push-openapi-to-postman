@@ -14,7 +14,7 @@ const axiosGet = axios.get;
 
 describe('test getSchemaId', () => {
     test('calls the Postman API with the proper URL', async () => {
-        axiosGet.mockResolvedValue({data: {schemas: [{id: 'SCHEMA_ID'}]}});
+        axiosGet.mockResolvedValue({status: 200, data: {schemas: [{id: 'SCHEMA_ID'}]}});
         await getSchemaId('API_KEY', 'API_ID');
         expect(axiosGet).toHaveBeenCalledTimes(1);
         expect(getAxiosConfig).toHaveBeenCalledTimes(1);
