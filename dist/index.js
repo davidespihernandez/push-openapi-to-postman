@@ -6236,6 +6236,14 @@ async function run() {
     const versionName = core.getInput('version-name');
     const releaseNotes = core.getInput('release-notes');
 
+    core.info(`Inputs:`);
+    core.info(`  path-to-definition: ${path}`);
+    core.info(`  api-id: ${apiId}`);
+    core.info(`  schema-id: ${schemaId}`);
+    core.info(`  api-path-to-file-name: ${fileName}`);
+    core.info(`  version-name: ${versionName}`);
+    core.info(`  release-notes: ${releaseNotes}`);
+
     core.info(`Reading OpenAPI definition file ...`);
     const openAPIFileContents = await readFile(path);
 
