@@ -6208,7 +6208,7 @@ const readFile = async (path) => {
     core.info(`Reading ${path} file ...`);
     let content = await fs.readFile(path, 'utf8');
     core.debug(`File read`);
-    return content.toString();
+    return JSON.stringify(JSON.parse(content.toString()), null, 2);
 }
 
 module.exports = readFile;
