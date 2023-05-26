@@ -7,7 +7,7 @@ const updateSchemaFile = async (postmanApiKey, apiId, schemaId, fileContents, fi
     core.info(`Updating file content on Postman ...`);
     const response = await axios.put(
         `${POSTMAN_API_BASE_URL}/apis/${apiId}/schemas/${schemaId}/files/${fileName}`,
-        {'content': JSON.stringify(fileContents)},
+        {'content': fileContents},
         getAxiosConfig(postmanApiKey),
     );
     core.debug(`Postman API PUT updateSchemaFile response code: ${response.status}`);

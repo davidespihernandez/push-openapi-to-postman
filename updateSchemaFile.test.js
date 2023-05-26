@@ -21,7 +21,7 @@ describe('test updateSchemaFile', () => {
         expect(getAxiosConfig).toHaveBeenCalledWith('API_KEY');
         expect(axiosPut).toHaveBeenCalledWith(
             `${POSTMAN_API_BASE_URL}/apis/API_ID/schemas/SCHEMA_ID/files/index.json`,
-            {'content': '"contents"'},
+            {'content': 'contents'},
             {},
         );
     });
