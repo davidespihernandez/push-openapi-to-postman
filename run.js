@@ -22,7 +22,7 @@ async function run() {
     core.info(`  release-notes: ${releaseNotes}`);
 
     core.info(`Retrieving the Schema id from the API ...`);
-    const schemaId = getSchemaId(postmanApiKey, apiId);
+    const schemaId = await getSchemaId(postmanApiKey, apiId);
 
     core.info(`Reading OpenAPI definition file ...`);
     const openAPIFileContents = await readFile(path);
