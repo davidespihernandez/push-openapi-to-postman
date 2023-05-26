@@ -38,9 +38,10 @@ const {getAxiosConfig} = __nccwpck_require__(770);
 const {POSTMAN_API_BASE_URL} = __nccwpck_require__(1629);
 
 const createNewVersion = async (postmanApiKey, apiId, schemaId, versionName, releaseNotes) => {
-    core.info(`Creating new version on Postman ...`);
+    const url = `${POSTMAN_API_BASE_URL}/apis/${apiId}/versions`;
+    core.info(`Creating new version on Postman: ${url} ...`);
     const response = await axios.post(
-        `${POSTMAN_API_BASE_URL}/apis/${apiId}/versions`,
+        url,
         {
             'name': versionName,
             'releaseNotes': releaseNotes,
@@ -6270,8 +6271,7 @@ const {POSTMAN_API_BASE_URL} = __nccwpck_require__(1629);
 const updateSchemaFile = async (postmanApiKey, apiId, schemaId, fileContents, fileName) => {
     const url = `${POSTMAN_API_BASE_URL}/apis/${apiId}/schemas/${schemaId}/files/${fileName}`;
     core.info(`Updating file content on Postman: ${url} ...`);
-    const response = await axios.put(
-        url,
+    const response = await axios.put(url,
         {content: fileContents},
         getAxiosConfig(postmanApiKey),
     );
