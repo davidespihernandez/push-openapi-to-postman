@@ -4,10 +4,11 @@ const {getAxiosConfig} = require('./axiosUtils');
 const {POSTMAN_API_BASE_URL} = require('./constants');
 
 const updateSchemaFile = async (postmanApiKey, apiId, schemaId, fileContents, fileName) => {
-    core.info(`Updating file content on Postman ...`);
+    const url = `${POSTMAN_API_BASE_URL}/apis/${apiId}/schemas/${schemaId}/files/${fileName}`;
+    core.info(`Updating file content on Postman: ${url} ...`);
     const response = await axios.put(
-        `${POSTMAN_API_BASE_URL}/apis/${apiId}/schemas/${schemaId}/files/${fileName}`,
-        {'content': fileContents},
+        url,
+        {content: fileContents},
         getAxiosConfig(postmanApiKey),
     );
     core.debug(`Postman API PUT updateSchemaFile response code: ${response.status}`);
